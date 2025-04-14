@@ -1,38 +1,52 @@
-import 'react-native-url-polyfill/auto'
-import React from 'react'
-import { View, Text, Button, Image, StyleSheet } from 'react-native'
+import React, { useState } from 'react';
+import { Alert, Text, View } from 'react-native';
+import MapView, { Marker, Callout, Region } from 'react-native-maps';
+import { markers, MarkerType } from '../assets/markers';
 
 
-export default function FindRide({ user }: { user: any }) {
+const INITIAL_REGION: Region = {
+  latitude: 54.6582,
+  longitude: -1.8608,
+  latitudeDelta: 0.01,
+  longitudeDelta: 0.01
+};
+
+
+export default function App() {
+  const [selectedMarker, setSelectedMarker] = useState<MarkerType | null>(null)
+  
+  // console.log(selectedMarker)
+
+  const onMarkerSelected = (marker: MarkerType) => {
+    setSelectedMarker(marker);
+  };
+
+  // const calloutPressed = () => {
+  //   Alert.alert('Callout pressed');
+  // };
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.welcome}>Find somewhere to SHRED!</Text>
-      <Image
-        source={{ uri: 'https://cdn.pixabay.com/photo/2013/07/13/14/05/location-162102_1280.png' }}
-        style={styles.image}
-        resizeMode="contain"
-      />
-    </View>
-  )
-}
-
-
-const styles = StyleSheet.create({
-  container: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    padding: 20,
-    flex: 1,
-  },
-  welcome: {
-    fontSize: 18,
-    marginBottom: 20,
-  },
-  image: {
-    width: 400,
-    height: 250,
-    marginBottom: 20,
-    borderRadius: 10,
-  },
-})
+    <MapView
+      style={{ flex: 1 }}
+      initialRegion={INITIAL_REGION}
+    >
+      {markers.map((marker, index) => (
+        <Marker
+          key={index}
+          title={marker.name}
+          coordinate={{
+            latitude: marker.latitude,
+            longitude: marker.longitude
+          }}
+          onPress={() => onMarkerSelected(marker)}
+        >
+          {/* <Callout onPress={calloutPressed}>
+            <View>
+              <Text>{marker.name}</Text>
+            </View>
+          </Callout> */}
+        </Marker>
+      ))}
+    </MapView>
+  );
+};

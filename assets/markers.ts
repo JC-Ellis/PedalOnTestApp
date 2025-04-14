@@ -1,0 +1,58 @@
+export type MarkerType = {
+    name: string;
+    latitude: number;
+    longitude: number;
+  };
+
+export const markers: MarkerType[] = [
+    { name: "Pine Hollow", latitude: 54.6578, longitude: -1.8615 },
+    { name: "Foxglove Corner", latitude: 54.6589, longitude: -1.8602 },
+    { name: "Ranger's Rest", latitude: 54.6565, longitude: -1.8648 },
+    { name: "Oakshade Clearing", latitude: 54.6593, longitude: -1.8631 },
+    { name: "Bracken Hill", latitude: 54.6581, longitude: -1.8594 },
+    { name: "Fernside Edge", latitude: 54.6602, longitude: -1.8610 },
+    { name: "Deerwatch Rise", latitude: 54.6559, longitude: -1.8606 },
+    { name: "Whinberry Way", latitude: 54.6570, longitude: -1.8663 },
+    { name: "Bramble Nook", latitude: 54.6605, longitude: -1.8640 },
+    { name: "Hazelbank Ridge", latitude: 54.6562, longitude: -1.8633 },
+    { name: "Willow Path", latitude: 54.6587, longitude: -1.8579 },
+    { name: "Badger Hollow", latitude: 54.6599, longitude: -1.8607 },
+    { name: "Bluebell Dell", latitude: 54.6573, longitude: -1.8622 },
+    { name: "Ashgate Rise", latitude: 54.6556, longitude: -1.8655 },
+    { name: "Ravenscar View", latitude: 54.6601, longitude: -1.8593 },
+    { name: "Larch Trailhead", latitude: 54.6580, longitude: -1.8588 },
+    { name: "Thistle End", latitude: 54.6568, longitude: -1.8597 },
+    { name: "Heather Mound", latitude: 54.6591, longitude: -1.8651 },
+    { name: "Woodpecker Point", latitude: 54.6577, longitude: -1.8619 },
+    { name: "Spruce Hollow", latitude: 54.6606, longitude: -1.8574 },
+    { name: "Cedar Watch", latitude: 54.6553, longitude: -1.8624 },
+    { name: "Wren's Way", latitude: 54.6584, longitude: -1.8662 },
+    { name: "Birchstone Path", latitude: 54.6598, longitude: -1.8643 },
+    { name: "Acorn Top", latitude: 54.6560, longitude: -1.8583 },
+    { name: "Lapwing Crag", latitude: 54.6603, longitude: -1.8660 },
+    { name: "Mossy Hollow", latitude: 54.6576, longitude: -1.8604 },
+    { name: "Curlew Rest", latitude: 54.6551, longitude: -1.8590 },
+    { name: "Sycamore Loop", latitude: 54.6611, longitude: -1.8628 },
+    { name: "Hawk's Perch", latitude: 54.6575, longitude: -1.8644 },
+    { name: "Thorny End", latitude: 54.6582, longitude: -1.8591 },
+    { name: "Briar Patch", latitude: 54.6609, longitude: -1.8587 },
+    { name: "Rowan View", latitude: 54.6566, longitude: -1.8664 },
+    { name: "Elm Gate", latitude: 54.6590, longitude: -1.8620 },
+    { name: "Otter Bridge", latitude: 54.6579, longitude: -1.8657 },
+    { name: "Hollowstone Point", latitude: 54.6586, longitude: -1.8613 },
+    { name: "Gorsebank Rise", latitude: 54.6569, longitude: -1.8600 },
+    { name: "Fallow Watch", latitude: 54.6550, longitude: -1.8612 },
+    { name: "Squirrel Top", latitude: 54.6610, longitude: -1.8605 },
+    { name: "Buttercup Bend", latitude: 54.6554, longitude: -1.8641 },
+    { name: "Hedgerow Hill", latitude: 54.6608, longitude: -1.8598 },
+    { name: "Maple Hollow", latitude: 54.6597, longitude: -1.8577 },
+    { name: "Wren Hollow", latitude: 54.6571, longitude: -1.8609 },
+    { name: "Stonecrop Point", latitude: 54.6585, longitude: -1.8647 },
+    { name: "Heron Glen", latitude: 54.6564, longitude: -1.8611 },
+    { name: "Beech Bluff", latitude: 54.6592, longitude: -1.8665 },
+    { name: "Kestrel Ridge", latitude: 54.6572, longitude: -1.8585 },
+    { name: "Thornwood Path", latitude: 54.6600, longitude: -1.8654 },
+    { name: "Driftwood Dell", latitude: 54.6561, longitude: -1.8596 },
+    { name: "Hollyrise Crag", latitude: 54.6596, longitude: -1.8636 }
+  ];
+  
