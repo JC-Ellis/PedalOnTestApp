@@ -14,7 +14,7 @@ export default function MainScreen() {
     <View style={styles.container}>
       <Text style={styles.welcome}>
         Welcome,{" "}
-        {userInfo?.user_metadata?.display_name || userInfo?.email || "Guest"}!
+        {userInfo?.user_metadata?.display_name || "New User"}!
       </Text>
       <Image
         source={{

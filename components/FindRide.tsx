@@ -10,7 +10,7 @@ const INITIAL_REGION: Region = {
   longitudeDelta: 0.01,
 };
 
-const MapScreen = () => {
+export default function MapScreen() {
   const [selectedMarker, setSelectedMarker] = useState<MarkerType | null>(null);
 
   const onMarkerSelected = (marker: MarkerType) => {
@@ -80,4 +80,4 @@ container: {
   },
 });
 
-export default MapScreen;
+;

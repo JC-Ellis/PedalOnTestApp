@@ -7,7 +7,7 @@ import ProfileStack from "./ProfileStack";
 
 const Tab = createBottomTabNavigator();
 
-export default function Tabs({ user }: { user: any }) {
+export default function Tabs() {
   return (
     <Tab.Navigator>
       <Tab.Screen
@@ -22,9 +22,11 @@ export default function Tabs({ user }: { user: any }) {
             />
           ),
         }}
-        children={() => <MainScreen user={user} />}
+        component={MainScreen}
       />
-      <Tab.Screen name="Profile" options={{
+      <Tab.Screen
+        name="Profile"
+        options={{
           title: "Profile",
           tabBarIcon: ({ color, focused }) => (
             <Ionicons
@@ -33,8 +35,12 @@ export default function Tabs({ user }: { user: any }) {
               size={24}
             />
           ),
-        }} children={() => <ProfileStack user={user} />} />
-      <Tab.Screen name="Find Ride" options={{
+        }}
+        component={ProfileStack}
+      />
+      <Tab.Screen
+        name="Find Ride"
+        options={{
           title: "Find Ride",
           tabBarIcon: ({ color, focused }) => (
             <Ionicons
@@ -43,7 +49,9 @@ export default function Tabs({ user }: { user: any }) {
               size={24}
             />
           ),
-        }} children={() => <FindRide user={user} />} />
+        }}
+        component={FindRide}
+      />
     </Tab.Navigator>
   );
 }

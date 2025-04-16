@@ -2,10 +2,10 @@ import "react-native-url-polyfill/auto";
 import { useState, useEffect } from "react";
 import { supabase } from "./lib/supabase";
 import { Session } from "@supabase/supabase-js";
-import Auth from "./components/Auth";
 import { NavigationContainer } from "@react-navigation/native";
-import Tabs from "./components/Tabs";
 import { UserProvider } from "./components/UserContext";
+import Tabs from "./components/Tabs";
+import AuthStack from "./components/AuthStack";
 
 export default function App() {
   const [session, setSession] = useState<Session | null>(null);
@@ -23,7 +23,7 @@ export default function App() {
   return (
     <UserProvider>
       <NavigationContainer>
-        {!session ? <Auth /> : <Tabs user={session.user} />}
+        {!session ? <AuthStack /> : <Tabs/>}
       </NavigationContainer>
     </UserProvider>
   );
