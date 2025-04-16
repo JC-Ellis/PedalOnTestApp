@@ -7,36 +7,51 @@ export default function Auth({ navigation }: { navigation: any }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
-  const [displayName, setDisplayName] = useState("");
-  const [userAge, setUserAge] = useState("");
-  const [userFirstName, setUserFirstName] = useState("");
-  const [userLastName, setUserLastName] = useState("");
-  const [user_location, setLocation] = useState("");
-  const [avatar_url, setAvatarUrl] = useState("");
+  // const [displayName, setDisplayName] = useState("");
+  // const [userAge, setUserAge] = useState("");
+  // const [userFirstName, setUserFirstName] = useState("");
+  // const [userLastName, setUserLastName] = useState("");
+  // const [user_location, setLocation] = useState("");
+  // const [avatar_url, setAvatarUrl] = useState("");
 
   async function signUpWithEmail() {
     setLoading(true);
+  
     const {
-      data: { session },
+      data: { session, user },
       error,
     } = await supabase.auth.signUp({
       email,
       password,
-      options: {
-        data: {
-          display_name: displayName,
-          first_name: userFirstName,
-          last_name: userLastName,
-          age: userAge,
-          location: user_location,
-          avatarUrl: avatar_url,
-        },
-      },
     });
-
-    if (error) Alert.alert(error.message);
-    if (!session)
+  
+    if (error) {
+      Alert.alert(error.message);
+      setLoading(false);
+      return;
+    }
+  
+    if (!session) {
       Alert.alert("Please check your inbox for email verification!");
+      setLoading(false);
+      return;
+    }
+  
+    const userId = session.user.id;
+  
+    const { error: profileError } = await supabase.from("user_profile").insert([
+      {
+        user_id: userId,
+        // username: displayName,
+      },
+    ]);
+  
+    if (profileError) {
+      Alert.alert("Profile creation failed", profileError.message);
+    } else {
+      Alert.alert("Signup successful!");
+    }
+  
     setLoading(false);
   }
 
@@ -73,7 +88,7 @@ export default function Auth({ navigation }: { navigation: any }) {
           autoCapitalize={"none"}
         />
       </View>
-      <View style={[styles.verticallySpaced, styles.mt20]}>
+      {/* <View style={[styles.verticallySpaced, styles.mt20]}>
         <Input
           label="Display Name"
           leftIcon={{ type: "font-awesome", name: "user" }}
@@ -82,8 +97,8 @@ export default function Auth({ navigation }: { navigation: any }) {
           placeholder="Username"
           textContentType="nickname"
         />
-      </View>
-      <View style={[styles.verticallySpaced, styles.mt20]}>
+      </View> */}
+      {/* <View style={[styles.verticallySpaced, styles.mt20]}>
         <Input
           label="First Name"
           leftIcon={{ type: "font-awesome", name: "envelope" }}
@@ -132,7 +147,7 @@ export default function Auth({ navigation }: { navigation: any }) {
           placeholder="www.coolpic.com"
           autoCapitalize={"none"}
         />
-      </View>
+      </View> */}
       <View style={styles.verticallySpaced}>
         <Button
           style={styles.button}

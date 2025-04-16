@@ -12,20 +12,36 @@ export default function EditUser() {
   const [displayName, setDisplayName] = useState("");
   const [userAge, setUserAge] = useState("");
   const [userFirstName, setUserFirstName] = useState("");
+  const [userLastName, setUserLastName] = useState("");
   const [user_location, setLocation] = useState("");
   const [avatar_url, setAvatarUrl] = useState("");
   const [updateComplete, setUpdateComplete] = useState(false);
   const navigation = useNavigation();
 
   useEffect(() => {
-    if (user?.user_metadata) {
-      setDisplayName(user.user_metadata.display_name || "");
-      setUserFirstName(user.user_metadata.first_name || "");
-      setUserAge(user.user_metadata.age || "");
-      setLocation(user.user_metadata.location || "");
-      setAvatarUrl(user.user_metadata.avatarUrl || "");
-    }
-  }, [updateComplete]);
+    const fetchProfile = async () => {
+      if (!user?.id) return;
+  
+      const { data, error } = await supabase
+        .from("user_profile")
+        .select("*")
+        .eq("user_id", user.id)
+        .single();
+  
+      if (error) {
+        console.error("Error fetching profile:", error.message);
+      } else if (data) {
+        setDisplayName(data.username || "");
+        setUserFirstName(data.first_name || "");
+        setUserLastName(data.last_name || "");
+        setUserAge(data.user_age || "");
+        setLocation(data.user_location || "");
+        setAvatarUrl(data.profile_image || "");
+      }
+    };
+  
+    fetchProfile();
+  }, [user, updateComplete]);
 
   useEffect(() => {
     if (updateComplete) {
@@ -34,18 +50,22 @@ export default function EditUser() {
   }, [updateComplete]);
 
   async function editUserDetails() {
+    if (!user) return;
+  
     setLoading(true);
-
-    const { data, error } = await supabase.auth.updateUser({
-      data: {
-        display_name: displayName,
+  
+    const { error } = await supabase
+      .from("user_profile")
+      .update({
+        username: displayName,
         first_name: userFirstName,
-        age: userAge,
-        location: user_location,
-        avatarUrl: avatar_url,
-      },
-    });
-
+        last_name: userLastName,
+        user_age: userAge,
+        user_location: user_location,
+        profile_image: avatar_url,
+      })
+      .eq("user_id", user?.id);
+  
     if (error) {
       Alert.alert("Error", error.message);
     } else {
@@ -53,7 +73,7 @@ export default function EditUser() {
       setUpdateComplete(true);
       navigation.goBack();
     }
-
+  
     setLoading(false);
   }
 
@@ -83,7 +103,17 @@ export default function EditUser() {
           leftIcon={{ type: "font-awesome", name: "envelope" }}
           onChangeText={(text) => setUserFirstName(text)}
           value={userFirstName}
-          placeholder="Your Name"
+          placeholder="Your First Name"
+          autoCapitalize={"none"}
+        />
+      </View>
+      <View style={[styles.verticallySpaced, styles.mt20]}>
+        <Input
+          label="Last Name"
+          leftIcon={{ type: "font-awesome", name: "envelope" }}
+          onChangeText={(text) => setUserLastName(text)}
+          value={userLastName}
+          placeholder="Your Last Name"
           autoCapitalize={"none"}
         />
       </View>
@@ -91,7 +121,7 @@ export default function EditUser() {
         <Input
           label="Age"
           leftIcon={{ type: "font-awesome", name: "envelope" }}
-          onChangeText={(integer) => setUserAge(integer)}
+          onChangeText={(integer) => setUserAge(text)}
           value={userAge}
           placeholder="99"
           autoCapitalize={"none"}

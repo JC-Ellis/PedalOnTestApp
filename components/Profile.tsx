@@ -1,28 +1,58 @@
 import "react-native-url-polyfill/auto";
-import React, { useContext } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { View, Text, Button, Image, StyleSheet } from "react-native";
+import { supabase } from "../lib/supabase";
 import { UserContext } from "./UserContext";
+import { useFocusEffect } from '@react-navigation/native';
+import { useCallback } from 'react';
 
-export default function Profile({
-  user,
-  navigation,
-}: {
-  user: any;
-  navigation: any;
-}) {
-  const userInfo = useContext(UserContext);
+export default function Profile({ navigation }: { navigation: any }) {
+  const user = useContext(UserContext);
+  const [profile, setProfile] = useState<any>(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    if (user?.id) {
+      fetchUserProfile();
+    }
+  }, [user]);
+
+  const fetchUserProfile = async () => {
+    setLoading(true);
+    const { data, error } = await supabase
+      .from("user_profile")
+      .select("*")
+      .eq("user_id", user.id)
+      .single();
+
+    if (error) {
+      console.error("Error fetching profile:", error.message);
+    } else {
+      setProfile(data);
+    }
+
+    setLoading(false);
+  };
+
+  useFocusEffect(
+    useCallback(() => {
+      if (user?.id) {
+        fetchUserProfile();
+      }
+    }, [user?.id])
+  );
 
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Welcome</Text>
       <Text style={styles.username}>
-        {userInfo?.user_metadata?.display_name || userInfo?.email || "Guest"}!
+        {profile?.username || user?.email || "Guest"}!
       </Text>
 
       <Image
         source={{
           uri:
-            userInfo?.user_metadata?.avatarUrl ||
+            profile?.profile_image ||
             "https://cdn.pixabay.com/photo/2013/07/13/12/49/guy-160411_1280.png",
         }}
         style={styles.image}
@@ -31,19 +61,21 @@ export default function Profile({
 
       <View style={styles.infoBox}>
         <Text style={styles.infoText}>
-          <Text style={styles.label}>Email:</Text> {userInfo?.email || "Guest"}
+          <Text style={styles.label}>Email:</Text> {user?.email || "Guest"}
         </Text>
         <Text style={styles.infoText}>
           <Text style={styles.label}>Name:</Text>{" "}
-          {userInfo?.user_metadata?.first_name + " " + userInfo?.user_metadata?.last_name || "No name set"}
+          {profile?.first_name && profile?.last_name
+            ? `${profile.first_name} ${profile.last_name}`
+            : "No name set"}
         </Text>
         <Text style={styles.infoText}>
           <Text style={styles.label}>Age:</Text>{" "}
-          {userInfo?.user_metadata?.age || "No age set"}
+          {profile?.user_age || "No age set"}
         </Text>
         <Text style={styles.infoText}>
           <Text style={styles.label}>Location:</Text>{" "}
-          {userInfo?.user_metadata?.location || "No location set"}
+          {profile?.user_location || "No location set"}
         </Text>
       </View>
 
@@ -52,7 +84,7 @@ export default function Profile({
         onPress={() => navigation.navigate("Your Gallery")}
         style={styles.button}
       />
-            <Button
+      <Button
         title="Edit Profile"
         onPress={() => navigation.navigate("Edit Profile")}
       />
